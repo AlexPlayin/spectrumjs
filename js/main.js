@@ -1,16 +1,40 @@
-var spectrum_obj = function (ss) {
+var spectrum_obj = function () {
 
     this.create = function (target, options) {
-        console.log('go called');
-
         // Set variables
 
-        amount = 16 || options.amount;
-        color = '#1F1' || options.color;
-        heightmult = 1 || options.height;
-        speed = 300 || options.speed;
+        if (options.amount === undefined) {
+            amount = 16;
+        } else {
+            amount = options.amount;
+        }
 
-        console.log(color);
+        if (options.color === undefined) {
+            color = '#1F1';
+        } else {
+            color = options.color;
+        }
+
+        if (options.height === undefined) {
+            heightmult = 1;
+        } else {
+            heightmult = options.height;
+        }
+
+        if (options.speed === undefined) {
+            speed = 400;
+        } else {
+            speed = options.speed;
+        }
+
+        if (options.mode === undefined) {
+            mode = 'middle';
+        } else {
+            mode = options.mode;
+        }
+
+
+        console.log(mode);
 
         parentwidth = target.width();
 
@@ -34,7 +58,26 @@ var spectrum_obj = function (ss) {
             $(this).css('height', '100%');
             $(this).css('transition', '0.3s ease');
             $(this).css('vertical-align', 'bottom');
-            $(this).css('margin-bottom', marginheight + 'px');
+            switch (mode) {
+                case 'top':
+                    {
+                        $(this).css('margin-bottom', '0px');
+                        break;
+                    }
+                case 'middle':
+                    {
+                        $(this).css('margin-bottom', marginheight + 'px');
+                        break;
+                    }
+                case 'bottom':
+                    {
+                        $(this).css('margin-bottom', marginheight * 2 + 'px');
+                        $(this).css('margin-bottom', '0px');
+                        $(this).parent().css('-webkit-transform', 'scaleY(-1)');
+                        $(this).parent().css('transform', 'scaleY(-1)');
+                        break;
+                    }
+            }
         });
 
 
@@ -45,8 +88,29 @@ var spectrum_obj = function (ss) {
             $('.spectrum-line').each(function () {
                 $(this).css('left', containerwidth * count + 'px');
                 var rand = Math.random();
-                $(this).css('bottom', '-' + rand * 100 * heightmult / 2 + '%');
-                $(this).css('height', rand * 100 * heightmult + '%');
+
+                switch (mode) {
+                    case 'top':
+                        {
+                            $(this).css('bottom', '0%');
+                            $(this).css('height', rand * 100 * heightmult + '%');
+                            break;
+                        }
+                    case 'middle':
+                        {
+                            $(this).css('bottom', '-' + rand * 100 * heightmult / 2 + '%');
+                            $(this).css('height', rand * 100 * heightmult + '%');
+                            break;
+                        }
+                    case 'bottom':
+                        {
+                            $(this).css('bottom', '0%');
+                            $(this).css('height', rand * 100 * heightmult + '%');
+                            break;
+                        }
+                }
+                //$(this).css('bottom', '-' + rand * 100 * heightmult / 2 + '%');
+                //$(this).css('height', rand * 100 * heightmult + '%');
                 count = count + 1;
             });
 
@@ -57,10 +121,10 @@ var spectrum_obj = function (ss) {
     return spectrum;
 };
 
-/*if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = spectrum_obj;
-} else {
-    window.spectrum = spectrum_obj;
+function check(obj, name) {
+    if (obj === undefined) {
+
+    }
 }
-//module.exports = spectrum; */
-var spectrum = new spectrum_obj(0);
+
+var spectrum = new spectrum_obj();
