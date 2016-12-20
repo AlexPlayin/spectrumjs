@@ -1,8 +1,10 @@
 $(function () {
 
     var options = {
-        mode: 'bottom',
-        amount: 100
+        mode: 'middle',
+        amount: 100,
+        color: 'rainbow'
+
     };
 
     spectrum.create($('.spectrum-container'), options);
